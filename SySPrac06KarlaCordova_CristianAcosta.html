@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>Pr&aacute;ctica 6: Sistemas Diferenciales</h1><!--introduction--><p><b>Autores:</b></p><p><b>C&oacute;rdova Fern&aacute;ndez Karla Lilia, Acosta Villa Cristian Abraham.</b></p><p><b>SE&Ntilde;ALES Y SISTEMAS, Grupo 2TV1</b></p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Funciones usadas en esta pr&aacute;ctica.</a></li><li><a href="#2">Programa para soluci&oacute;n de problemas diferenciales.</a></li><li><a href="#4">Respuesta a entrada y estado cero</a></li><li><a href="#5">Para versiones superiores a 2016</a></li><li><a href="#6">Referencias.</a></li></ul></div><h2 id="1">Funciones usadas en esta pr&aacute;ctica.</h2><h2 id="2">Programa para soluci&oacute;n de problemas diferenciales.</h2><p>Ejemplo: resolver y^(2)+2y^(1)+2y=x^(1)+2x con y^(1)(0)=0 y(0)=0, x(0)=0, x(t)=exp(-t)u(t), para 5 segundos,</p><p>Con ayuda de Fourier:</p><pre class="codeinput">sympref(<span class="string">'HeavisideAtOrigin'</span>, 1);
+  </style></head><body><div class="content"><h1>Pr&aacute;ctica 6: Sistemas Diferenciales</h1><!--introduction--><p><b>Autores:</b></p><p><b>C&oacute;rdova Fern&aacute;ndez Karla Lilia, Acosta Villa Cristian Abraham.</b></p><p><b>SE&Ntilde;ALES Y SISTEMAS, Grupo 2TV1</b></p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Funciones usadas en esta pr&aacute;ctica.</a></li><li><a href="#2">Programa para soluci&oacute;n de problemas diferenciales.</a></li><li><a href="#4">Respuesta a entrada y estado cero</a></li><li><a href="#5">Referencias.</a></li></ul></div><h2 id="1">Funciones usadas en esta pr&aacute;ctica.</h2><h2 id="2">Programa para soluci&oacute;n de problemas diferenciales.</h2><p>Ejemplo: resolver y^(2)+2y^(1)+2y=x^(1)+2x con y^(1)(0)=0 y(0)=0, x(0)=0, x(t)=exp(-t)u(t), para 5 segundos,</p><p>Con ayuda de Fourier:</p><pre class="codeinput">sympref(<span class="string">'HeavisideAtOrigin'</span>, 1);
 FT=0;
 RI=0;
 RE0=0;
@@ -306,10 +306,6 @@ eq1=edd==edi;
 disp(<span class="string">'Y(s)='</span>)
 edd=solve(eq1, Yy);
 pretty(edd)
-</pre><h2 id="5">Para versiones superiores a 2016</h2><pre class="codeinput">mensaje(<span class="string">'DESARROLLAMOS LAS FRACCIONES PARCIALES DE Y(s)'</span>)
-disp(<span class="string">'Y(s)='</span>)
-pretty(partfrac(edd))
-<span class="comment">%%%% Si se ejecuta en 2015 o menor comentar las 3 lineas anteriores</span>
 
 mensaje(<span class="string">'Aplicamos transformada inversa, asi la soluci&oacute;n es'</span>)
 disp(<span class="string">'y(t)='</span>)
@@ -407,15 +403,6 @@ Y(s)=
 s  + 3 s  + 4 s + 2
 
  
-DESARROLLAMOS LAS FRACCIONES PARCIALES DE Y(s)
- 
-Y(s)=
-  1           2
------ + ------------
-s + 1    2
-        s  + 2 s + 2
-
- 
 Aplicamos transformada inversa, asi la soluci&oacute;n es
  
 y(t)=
@@ -427,7 +414,7 @@ FUNCI&Oacute;N DE TRANSFERENCIA:
    2
 - w  + w 2i + 2
 
-</pre><img vspace="5" hspace="5" src="SySPrac06KarlaCordova_CristianAcosta_01.png" alt=""> <h2 id="6">Referencias.</h2><div><ul><li>B.P. Lathi. (2005). chapter 6.6. <i>Linear Systems and Signals</i>. E.U.A: Oxford University Press.</li></ul></div><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017b</a><br></p></div><!--
+</pre><img vspace="5" hspace="5" src="SySPrac06KarlaCordova_CristianAcosta_01.png" alt=""> <h2 id="5">Referencias.</h2><div><ul><li>B.P. Lathi. (2005). chapter 6.6. <i>Linear Systems and Signals</i>. E.U.A: Oxford University Press.</li></ul></div><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% Práctica 6: Sistemas Diferenciales
 % *Autores:*
@@ -591,12 +578,6 @@ eq1=edd==edi;
 disp('Y(s)=')
 edd=solve(eq1, Yy);
 pretty(edd)
-
-%%% Para versiones superiores a 2016
-mensaje('DESARROLLAMOS LAS FRACCIONES PARCIALES DE Y(s)')
-disp('Y(s)=')
-pretty(partfrac(edd))
-%%%% Si se ejecuta en 2015 o menor comentar las 3 lineas anteriores
 
 mensaje('Aplicamos transformada inversa, asi la solución es')
 disp('y(t)=')
