@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>Pr&aacute;ctica 6: Sistemas Diferenciales</h1><!--introduction--><p><b>Autores:</b></p><p><b>C&oacute;rdova Fern&aacute;ndez Karla Lilia, Acosta Villa Cristian Abraham.</b></p><p><b>SE&Ntilde;ALES Y SISTEMAS, Grupo 2TV1</b></p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Funciones usadas en esta pr&aacute;ctica.</a></li><li><a href="#2">Programa para soluci&oacute;n de problemas diferenciales.</a></li><li><a href="#4">Respuesta a entrada y estado cero</a></li><li><a href="#5">Referencias.</a></li></ul></div><h2 id="1">Funciones usadas en esta pr&aacute;ctica.</h2><h2 id="2">Programa para soluci&oacute;n de problemas diferenciales.</h2><p>Ejemplo: resolver y^(2)+2y^(1)+2y=x^(1)+2x con y^(1)(0)=0 y(0)=0, x(0)=0, x(t)=exp(-t)u(t), para 5 segundos,</p><p>Con ayuda de Fourier:</p><pre class="codeinput">sympref(<span class="string">'HeavisideAtOrigin'</span>, 1);
+  </style></head><body><div class="content"><h1>Pr&aacute;ctica 6: Sistemas Diferenciales</h1><!--introduction--><p><b>Autores:</b></p><p><b>C&oacute;rdova Fern&aacute;ndez Karla Lilia, Acosta Villa Cristian Abraham.</b></p><p><b>SE&Ntilde;ALES Y SISTEMAS, Grupo 2TV1</b></p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Funciones usadas en esta pr&aacute;ctica.</a></li><li><a href="#2">Programa para soluci&oacute;n de problemas diferenciales.</a></li><li><a href="#4">Respuesta a entrada y estado cero</a></li><li><a href="#5">Para versiones superiores a 2016</a></li><li><a href="#6">Referencias.</a></li></ul></div><h2 id="1">Funciones usadas en esta pr&aacute;ctica.</h2><h2 id="2">Programa para soluci&oacute;n de problemas diferenciales.</h2><p>Ejemplo: resolver y^(2)+2y^(1)+2y=x^(1)+2x con y^(1)(0)=0 y(0)=0, x(0)=0, x(t)=exp(-t)u(t), para 5 segundos,</p><p>Con ayuda de Fourier:</p><pre class="codeinput">sympref(<span class="string">'HeavisideAtOrigin'</span>, 1);
 FT=0;
 RI=0;
 RE0=0;
@@ -260,20 +260,17 @@ xlabel(<span class="string">'tiempo'</span>,<span class="string">'FontWeight'</s
 title(<span class="string">'Respuesta Estado Cero (Con Laplace)'</span>,<span class="string">'FontWeight'</span>,<span class="string">'bold'</span>,<span class="string">'FontSize'</span>,16)
 grid <span class="string">on</span>
 
-<span class="comment">% Respuesta a entrada cero</span>
-<span class="comment">%</span>
-<span class="comment">% Por definici&oacute;n, la respuesta a entrada cero quiere decir que no tenemos</span>
-<span class="comment">% ninguna entrada al sistema, por lo que quedar&iacute;a de la siguiente manera.</span>
-<span class="comment">%</span>
-<span class="comment">% $$ y''(t)+2'y(t)+2y = 0 $$, con $$ y(0-) = 1 $$ y $$ y(0)=0 $$</span>
+<span class="comment">% Respuesta total</span>
 <span class="comment">%</span>
 
 tam=size(a);
+tami=size(b);
 syms <span class="string">y(t)</span> <span class="string">Y(s)</span> <span class="string">x(t)</span> <span class="string">X(s)</span> <span class="string">Yy</span> <span class="string">fp</span>;
 syms <span class="string">edd</span> <span class="string">edi</span>
 edd=0;
 edi=0;
 ciy=[1,0]
+
 
 <span class="keyword">for</span> i=1:tam(2)
    edd=edd+a(i)*s^(i-1)*Y(s);
@@ -282,15 +279,24 @@ ciy=[1,0]
    <span class="keyword">end</span>
 <span class="keyword">end</span>
 
+<span class="keyword">for</span> i=1:tami(2)
+   edi=edi+b(i)*s^(i-1)*X(s);
+   <span class="keyword">for</span> k=1:i-1
+       edi=edi-b(i)*(s^(i-1-k)*cix(k));
+   <span class="keyword">end</span>
+<span class="keyword">end</span>
 mensaje(<span class="string">'APLICAMOS TRANSFORMADA DE LAPLACE y subtituimos condiciones iniciales'</span>)
 
 pretty(edd)
 disp(<span class="string">'='</span>)
+pretty(edi)
 
 mensaje(<span class="string">'SUBSTITUIMOS LA TRANSFORMADA DE LA ENTRADA'</span>)
 
+edi=subs(edi,X(s), laplace(xi));
 pretty(edd)
 disp(<span class="string">'='</span>)
+pretty(edi)
 
 mensaje(<span class="string">'DESPEJAMOS Y(s)'</span>)
 
@@ -300,6 +306,10 @@ eq1=edd==edi;
 disp(<span class="string">'Y(s)='</span>)
 edd=solve(eq1, Yy);
 pretty(edd)
+</pre><h2 id="5">Para versiones superiores a 2016</h2><pre class="codeinput">mensaje(<span class="string">'DESARROLLAMOS LAS FRACCIONES PARCIALES DE Y(s)'</span>)
+disp(<span class="string">'Y(s)='</span>)
+pretty(partfrac(edd))
+<span class="comment">%%%% Si se ejecuta en 2015 o menor comentar las 3 lineas anteriores</span>
 
 mensaje(<span class="string">'Aplicamos transformada inversa, asi la soluci&oacute;n es'</span>)
 disp(<span class="string">'y(t)='</span>)
@@ -308,13 +318,15 @@ pretty(y(t))
 
 dy(t)=diff(y,t);
 ddy(t)=diff(dy,t);
-
 subplot(2,2,3)
+fplot(xi,[0, t0],<span class="string">'b'</span>,<span class="string">'LineWidth'</span>,2)
+
 hold <span class="string">on</span>
-fplot(y,[0,t0],<span class="string">'m'</span>,<span class="string">'LineWidth'</span>,2)
-legend(<span class="string">'Salida y(t)'</span>,<span class="string">'Location'</span>,<span class="string">'Best'</span>)
+fplot(y,[0,t0],<span class="string">'r'</span>,<span class="string">'LineWidth'</span>,2)
+
+legend(<span class="string">'Entrada x(t)'</span>,<span class="string">'Salida y(t)'</span>,<span class="string">'Location'</span>,<span class="string">'Best'</span>)
 xlabel(<span class="string">'tiempo'</span>,<span class="string">'FontWeight'</span>,<span class="string">'bold'</span>,<span class="string">'FontSize'</span>,16)
-title(<span class="string">'Respuesta Entrada Cero'</span>,<span class="string">'FontWeight'</span>,<span class="string">'bold'</span>,<span class="string">'FontSize'</span>,16)
+title(<span class="string">'Respuesta Total'</span>,<span class="string">'FontWeight'</span>,<span class="string">'bold'</span>,<span class="string">'FontSize'</span>,16)
 grid <span class="string">on</span>
 
 <span class="keyword">end</span>
@@ -371,6 +383,8 @@ APLICAMOS TRANSFORMADA DE LAPLACE y subtituimos condiciones iniciales
 2 Y(s) - s + 2 s Y(s) + s  Y(s) - 2
 
 =
+2 X(s) + s X(s)
+
  
 SUBSTITUIMOS LA TRANSFORMADA DE LA ENTRADA
  
@@ -378,20 +392,34 @@ SUBSTITUIMOS LA TRANSFORMADA DE LA ENTRADA
 2 Y(s) - s + 2 s Y(s) + s  Y(s) - 2
 
 =
+  s       2
+----- + -----
+s + 1   s + 1
+
  
 DESPEJAMOS Y(s)
  
 Y(s)=
-    s + 2
-------------
- 2
-s  + 2 s + 2
+     2
+    s  + 4 s + 4
+-------------------
+ 3      2
+s  + 3 s  + 4 s + 2
+
+ 
+DESARROLLAMOS LAS FRACCIONES PARCIALES DE Y(s)
+ 
+Y(s)=
+  1           2
+----- + ------------
+s + 1    2
+        s  + 2 s + 2
 
  
 Aplicamos transformada inversa, asi la soluci&oacute;n es
  
 y(t)=
-exp(-t) (cos(t) + sin(t))
+exp(-t) + 2 exp(-t) sin(t)
 
 FUNCI&Oacute;N DE TRANSFERENCIA:
     2 + w 1i
@@ -399,7 +427,7 @@ FUNCI&Oacute;N DE TRANSFERENCIA:
    2
 - w  + w 2i + 2
 
-</pre><img vspace="5" hspace="5" src="SySPrac06KarlaCordova_CristianAcosta_01.png" alt=""> <h2 id="5">Referencias.</h2><div><ul><li>B.P. Lathi. (2005). chapter 6.6. <i>Linear Systems and Signals</i>. E.U.A: Oxford University Press.</li></ul></div><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017b</a><br></p></div><!--
+</pre><img vspace="5" hspace="5" src="SySPrac06KarlaCordova_CristianAcosta_01.png" alt=""> <h2 id="6">Referencias.</h2><div><ul><li>B.P. Lathi. (2005). chapter 6.6. <i>Linear Systems and Signals</i>. E.U.A: Oxford University Press.</li></ul></div><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% Práctica 6: Sistemas Diferenciales
 % *Autores:*
@@ -517,20 +545,17 @@ xlabel('tiempo','FontWeight','bold','FontSize',16)
 title('Respuesta Estado Cero (Con Laplace)','FontWeight','bold','FontSize',16)
 grid on
 
-% Respuesta a entrada cero 
-%
-% Por definición, la respuesta a entrada cero quiere decir que no tenemos
-% ninguna entrada al sistema, por lo que quedaría de la siguiente manera.
-%
-% $$ y''(t)+2'y(t)+2y = 0 $$, con $$ y(0-) = 1 $$ y $$ y(0)=0 $$
+% Respuesta total
 %
 
 tam=size(a);
+tami=size(b);
 syms y(t) Y(s) x(t) X(s) Yy fp;
 syms edd edi 
 edd=0;
 edi=0;
 ciy=[1,0]
+
 
 for i=1:tam(2)
    edd=edd+a(i)*s^(i-1)*Y(s);
@@ -539,15 +564,24 @@ for i=1:tam(2)
    end
 end
 
+for i=1:tami(2)
+   edi=edi+b(i)*s^(i-1)*X(s);
+   for k=1:i-1
+       edi=edi-b(i)*(s^(i-1-k)*cix(k));
+   end
+end
 mensaje('APLICAMOS TRANSFORMADA DE LAPLACE y subtituimos condiciones iniciales')
 
 pretty(edd)
 disp('=')
+pretty(edi)
 
 mensaje('SUBSTITUIMOS LA TRANSFORMADA DE LA ENTRADA')
 
+edi=subs(edi,X(s), laplace(xi));
 pretty(edd)
 disp('=')
+pretty(edi)
 
 mensaje('DESPEJAMOS Y(s)')
 
@@ -558,6 +592,12 @@ disp('Y(s)=')
 edd=solve(eq1, Yy);
 pretty(edd)
 
+%%% Para versiones superiores a 2016
+mensaje('DESARROLLAMOS LAS FRACCIONES PARCIALES DE Y(s)')
+disp('Y(s)=')
+pretty(partfrac(edd))
+%%%% Si se ejecuta en 2015 o menor comentar las 3 lineas anteriores
+
 mensaje('Aplicamos transformada inversa, asi la solución es')
 disp('y(t)=')
 y(t)=ilaplace(edd);
@@ -565,13 +605,15 @@ pretty(y(t))
 
 dy(t)=diff(y,t);
 ddy(t)=diff(dy,t);
-
 subplot(2,2,3)
+fplot(xi,[0, t0],'b','LineWidth',2)
+
 hold on
-fplot(y,[0,t0],'m','LineWidth',2)
-legend('Salida y(t)','Location','Best')
+fplot(y,[0,t0],'r','LineWidth',2)
+
+legend('Entrada x(t)','Salida y(t)','Location','Best')
 xlabel('tiempo','FontWeight','bold','FontSize',16)
-title('Respuesta Entrada Cero','FontWeight','bold','FontSize',16)
+title('Respuesta Total','FontWeight','bold','FontSize',16)
 grid on
 
 end
