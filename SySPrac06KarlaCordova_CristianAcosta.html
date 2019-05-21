@@ -1,0 +1,588 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Pr&aacute;ctica 6: Sistemas Diferenciales</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-05-21"><meta name="DC.source" content="SySPrac06KarlaCordova_CristianAcosta.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Pr&aacute;ctica 6: Sistemas Diferenciales</h1><!--introduction--><p><b>Autores:</b></p><p><b>C&oacute;rdova Fern&aacute;ndez Karla Lilia, Acosta Villa Cristian Abraham.</b></p><p><b>SE&Ntilde;ALES Y SISTEMAS, Grupo 2TV1</b></p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Funciones usadas en esta pr&aacute;ctica.</a></li><li><a href="#2">Programa para soluci&oacute;n de problemas diferenciales.</a></li><li><a href="#4">Respuesta a entrada y estado cero</a></li><li><a href="#5">Referencias.</a></li></ul></div><h2 id="1">Funciones usadas en esta pr&aacute;ctica.</h2><h2 id="2">Programa para soluci&oacute;n de problemas diferenciales.</h2><p>Ejemplo: resolver y^(2)+2y^(1)+2y=x^(1)+2x con y^(1)(0)=0 y(0)=0, x(0)=0, x(t)=exp(-t)u(t), para 5 segundos,</p><p>Con ayuda de Fourier:</p><pre class="codeinput">sympref(<span class="string">'HeavisideAtOrigin'</span>, 1);
+FT=0;
+RI=0;
+RE0=0;
+t0 = 5;
+syms <span class="string">t</span>
+[FT,RI,RE0] = fourier2016a([2 2 1],[2 1],exp(-t)*heaviside(t),t0);
+laplace20161([2 2 1],[2 1],[0,0],[0],exp(-t)*heaviside(t),10)
+
+figure(1)
+hFig = figure(1);
+set(hFig, <span class="string">'Position'</span>, [0 0 900 900])
+axes1 = axes(<span class="string">'Parent'</span>,hFig,<span class="string">'FontWeight'</span>,<span class="string">'bold'</span>,<span class="string">'FontSize'</span>,16);
+tiempo=0:0.01:t0;
+subplot(2,2,1);
+fplot(RI,[0 t0],<span class="string">'b'</span>,<span class="string">'LineWidth'</span>,2)
+title(<span class="string">'Respuesta Impulso'</span>);
+grid <span class="string">on</span>
+subplot(2,2,2);
+fplot(RE0,[0 t0],<span class="string">'b'</span>,<span class="string">'LineWidth'</span>,2)
+title(<span class="string">'Respuesta Estado cero(Con Fourier)'</span>);
+grid <span class="string">on</span>
+
+disp(<span class="string">'FUNCI&Oacute;N DE TRANSFERENCIA:'</span>)
+pretty(FT)
+</pre><pre class="codeoutput"> 
+FUNCI&Oacute;N DE TRANSFERENCIA:
+ 
+    2 + w 1i
+---------------
+   2
+- w  + w 2i + 2
+
+ 
+RESPUESTA AL IMPULSO (Inversa de Fourier de la funci&oacute;n de transferencia):
+ 
+/                                   / 1   1  \
+| pi exp(t (- 1 - i)) (sign(t) + 1) | - + -i | + pi #1 (sign(t) + 1)
+\                                   \ 2   2  /
+
+   / 1   1  \                                                       \
+   | - - -i | + pi exp(t (- 1 - i)) dirac(t) 1i - pi #1 dirac(t) 1i |/(2 pi)
+   \ 2   2  /                                                       /
+
+where
+
+   #1 == exp(t (- 1 + 1i))
+
+
+ 
+APLICAMOS TRANSFORMADA DE FOURIER
+ 
+          2
+2 Y(w) - w  Y(w) + w Y(w) 2i
+
+=
+2 X(w) + w X(w) 1i
+
+ 
+SUBSTITUIMOS LA TRANSFORMADA DE LA ENTRADA
+ 
+ 
+ans =
+ 
+1/(1 + w*1i)
+ 
+          2
+2 Y(w) - w  Y(w) + w Y(w) 2i
+
+=
+  w 1i         2
+-------- + --------
+1 + w 1i   1 + w 1i
+
+ 
+DESPEJAMOS Y(w)
+ 
+Y(w)=
+   4    3         2
+  w  + w  1i + 2 w  + w 6i - 4
+- ----------------------------
+        6    4      2
+       w  + w  + 4 w  + 4
+
+ 
+DESARROLLAMOS LAS FRACCIONES PARCIALES DE Y(w)
+ 
+Y(w)=
+    / 1   1  \          / 1   1  \
+  w | - - -i | + 1i   w | - + -i | + 1i
+    \ 2   2  /          \ 2   2  /        - 1 + w 1i
+- ----------------- + ----------------- - ----------
+      2                   2                  2
+     w  - 2 w + 2        w  + 2 w + 2       w  + 1
+
+ 
+Aplicamos transformada inversa, asi la soluci&oacute;n es
+ 
+ 
+(RESPUESTA A ENTRADA CERO)
+ 
+y(t)=
+/
+| pi exp(-|t|) + pi #4 (sign(t) + 1) #2 + pi #3 (sign(t) + 1)
+\
+
+                                              / 1   1  \
+   #1 + pi exp(-|t|) sign(t) + pi #4 dirac(t) | - - -i |
+                                              \ 2   2  /
+
+                    / 1   1  \
+   + pi #3 dirac(t) | - + -i | + pi exp(t (1 - i)) dirac(t) #2
+                    \ 2   2  /
+
+                                    \
+   + pi exp(t (1 + 1i)) dirac(t) #1 |/(2 pi)
+                                    /
+
+where
+
+           1   1
+   #1 == - - - -i
+           2   2
+
+           1   1
+   #2 == - - + -i
+           2   2
+
+   #3 == exp(t (- 1 + 1i))
+
+   #4 == exp(t (- 1 - i))
+
+
+</pre><h2 id="4">Respuesta a entrada y estado cero</h2><p>Para obtener la respuesta a estado cero, las condiciones iniciales tienen que ser igual a 0, es decir:</p><p><img src="SySPrac06KarlaCordova_CristianAcosta_eq16365273150764432466.png" alt="$$ y(0) = 0, y'(0) = 0 , y''(0) = 0 ... y^{n}(0) = 0 $$"></p><p>En este caso quedaria de la siguiente manera:</p><pre class="codeinput"><span class="keyword">function</span> laplace20161(a,b,ciy,cix,xi,t0)
+
+close <span class="string">all</span>
+tam2=size(a);
+tami2=size(b);
+syms <span class="string">y(t)</span> <span class="string">Y(s)</span> <span class="string">x(t)</span> <span class="string">X(s)</span> <span class="string">Yy</span> <span class="string">fp</span>;
+syms <span class="string">edd</span> <span class="string">edi</span>
+edd2=0;
+edi2=0;
+
+<span class="keyword">for</span> i=1:tam2(2)
+   edd2=edd2+a(i)*s^(i-1)*Y(s);
+   <span class="keyword">for</span> k=1:i-1
+       edd2=edd2-a(i)*(s^(i-1-k)*ciy(k));
+   <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="keyword">for</span> i=1:tami2(2)
+   edi2=edi2+b(i)*s^(i-1)*X(s);
+   <span class="keyword">for</span> k=1:i-1
+       edi2=edi2-b(i)*(s^(i-1-k)*cix(k));
+   <span class="keyword">end</span>
+<span class="keyword">end</span>
+mensaje(<span class="string">'APLICAMOS TRANSFORMADA DE LAPLACE y subtituimos condiciones iniciales'</span>)
+
+pretty(edd2)
+disp(<span class="string">'='</span>)
+pretty(edi2)
+
+mensaje(<span class="string">'SUBSTITUIMOS LA TRANSFORMADA DE LA ENTRADA'</span>)
+
+edi2=subs(edi2,X(s), laplace(xi));
+pretty(edd2)
+disp(<span class="string">'='</span>)
+pretty(edi2)
+
+mensaje(<span class="string">'DESPEJAMOS Y(s)'</span>)
+
+edd2=collect(edd2,Y(s));
+edd2=subs(edd2,Y(s),Yy);
+eq1=edd2==edi2;
+disp(<span class="string">'Y(s)='</span>)
+edd2=solve(eq1, Yy);
+pretty(edd2)
+
+mensaje(<span class="string">'Aplicamos transformada inversa, asi la soluci&oacute;n es'</span>)
+disp(<span class="string">'y(t)='</span>)
+y2(t)=ilaplace(edd2);
+pretty(y2(t))
+
+dy(t)=diff(y2,t);
+ddy(t)=diff(dy,t);
+
+subplot(2,2,4)
+hold <span class="string">on</span>
+fplot(y2,[0,t0],<span class="string">'m'</span>,<span class="string">'LineWidth'</span>,2)
+legend(<span class="string">'Salida y(t)'</span>,<span class="string">'Location'</span>,<span class="string">'Best'</span>)
+xlabel(<span class="string">'tiempo'</span>,<span class="string">'FontWeight'</span>,<span class="string">'bold'</span>,<span class="string">'FontSize'</span>,16)
+title(<span class="string">'Respuesta Estado Cero (Con Laplace)'</span>,<span class="string">'FontWeight'</span>,<span class="string">'bold'</span>,<span class="string">'FontSize'</span>,16)
+grid <span class="string">on</span>
+
+<span class="comment">% Respuesta a entrada cero</span>
+<span class="comment">%</span>
+<span class="comment">% Por definici&oacute;n, la respuesta a entrada cero quiere decir que no tenemos</span>
+<span class="comment">% ninguna entrada al sistema, por lo que quedar&iacute;a de la siguiente manera.</span>
+<span class="comment">%</span>
+<span class="comment">% $$ y''(t)+2'y(t)+2y = 0 $$, con $$ y(0-) = 1 $$ y $$ y(0)=0 $$</span>
+<span class="comment">%</span>
+
+tam=size(a);
+syms <span class="string">y(t)</span> <span class="string">Y(s)</span> <span class="string">x(t)</span> <span class="string">X(s)</span> <span class="string">Yy</span> <span class="string">fp</span>;
+syms <span class="string">edd</span> <span class="string">edi</span>
+edd=0;
+edi=0;
+ciy=[1,0]
+
+<span class="keyword">for</span> i=1:tam(2)
+   edd=edd+a(i)*s^(i-1)*Y(s);
+   <span class="keyword">for</span> k=1:i-1
+       edd=edd-a(i)*(s^(i-1-k)*ciy(k));
+   <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+mensaje(<span class="string">'APLICAMOS TRANSFORMADA DE LAPLACE y subtituimos condiciones iniciales'</span>)
+
+pretty(edd)
+disp(<span class="string">'='</span>)
+
+mensaje(<span class="string">'SUBSTITUIMOS LA TRANSFORMADA DE LA ENTRADA'</span>)
+
+pretty(edd)
+disp(<span class="string">'='</span>)
+
+mensaje(<span class="string">'DESPEJAMOS Y(s)'</span>)
+
+edd=collect(edd,Y(s));
+edd=subs(edd,Y(s),Yy);
+eq1=edd==edi;
+disp(<span class="string">'Y(s)='</span>)
+edd=solve(eq1, Yy);
+pretty(edd)
+
+mensaje(<span class="string">'Aplicamos transformada inversa, asi la soluci&oacute;n es'</span>)
+disp(<span class="string">'y(t)='</span>)
+y(t)=ilaplace(edd);
+pretty(y(t))
+
+dy(t)=diff(y,t);
+ddy(t)=diff(dy,t);
+
+subplot(2,2,3)
+hold <span class="string">on</span>
+fplot(y,[0,t0],<span class="string">'m'</span>,<span class="string">'LineWidth'</span>,2)
+legend(<span class="string">'Salida y(t)'</span>,<span class="string">'Location'</span>,<span class="string">'Best'</span>)
+xlabel(<span class="string">'tiempo'</span>,<span class="string">'FontWeight'</span>,<span class="string">'bold'</span>,<span class="string">'FontSize'</span>,16)
+title(<span class="string">'Respuesta Entrada Cero'</span>,<span class="string">'FontWeight'</span>,<span class="string">'bold'</span>,<span class="string">'FontSize'</span>,16)
+grid <span class="string">on</span>
+
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> mensaje(texto)
+disp( <span class="string">' '</span>)
+disp(texto)
+disp( <span class="string">' '</span>)
+<span class="keyword">end</span>
+</pre><pre class="codeoutput"> 
+APLICAMOS TRANSFORMADA DE LAPLACE y subtituimos condiciones iniciales
+ 
+                     2
+2 Y(s) + 2 s Y(s) + s  Y(s)
+
+=
+2 X(s) + s X(s)
+
+ 
+SUBSTITUIMOS LA TRANSFORMADA DE LA ENTRADA
+ 
+                     2
+2 Y(s) + 2 s Y(s) + s  Y(s)
+
+=
+  s       2
+----- + -----
+s + 1   s + 1
+
+ 
+DESPEJAMOS Y(s)
+ 
+Y(s)=
+       s + 2
+-------------------
+ 3      2
+s  + 3 s  + 4 s + 2
+
+ 
+Aplicamos transformada inversa, asi la soluci&oacute;n es
+ 
+y(t)=
+exp(-t) - exp(-t) (cos(t) - sin(t))
+
+
+ciy =
+
+     1     0
+
+ 
+APLICAMOS TRANSFORMADA DE LAPLACE y subtituimos condiciones iniciales
+ 
+                         2
+2 Y(s) - s + 2 s Y(s) + s  Y(s) - 2
+
+=
+ 
+SUBSTITUIMOS LA TRANSFORMADA DE LA ENTRADA
+ 
+                         2
+2 Y(s) - s + 2 s Y(s) + s  Y(s) - 2
+
+=
+ 
+DESPEJAMOS Y(s)
+ 
+Y(s)=
+    s + 2
+------------
+ 2
+s  + 2 s + 2
+
+ 
+Aplicamos transformada inversa, asi la soluci&oacute;n es
+ 
+y(t)=
+exp(-t) (cos(t) + sin(t))
+
+FUNCI&Oacute;N DE TRANSFERENCIA:
+    2 + w 1i
+---------------
+   2
+- w  + w 2i + 2
+
+</pre><img vspace="5" hspace="5" src="SySPrac06KarlaCordova_CristianAcosta_01.png" alt=""> <h2 id="5">Referencias.</h2><div><ul><li>B.P. Lathi. (2005). chapter 6.6. <i>Linear Systems and Signals</i>. E.U.A: Oxford University Press.</li></ul></div><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Práctica 6: Sistemas Diferenciales
+% *Autores:*
+%
+% *Córdova Fernández Karla Lilia, Acosta Villa Cristian Abraham.*
+%
+% *SEÑALES Y SISTEMAS, Grupo 2TV1*
+%
+
+%% Funciones usadas en esta práctica.
+%
+%
+%
+%% Programa para solución de problemas diferenciales.
+%
+% Ejemplo: resolver y^(2)+2y^(1)+2y=x^(1)+2x con y^(1)(0)=0
+% y(0)=0, x(0)=0, x(t)=exp(-t)u(t), para 5 segundos,
+%
+% Con ayuda de Fourier:
+%%
+sympref('HeavisideAtOrigin', 1);
+FT=0;
+RI=0;
+RE0=0;
+t0 = 5;
+syms t
+[FT,RI,RE0] = fourier2016a([2 2 1],[2 1],exp(-t)*heaviside(t),t0);
+laplace20161([2 2 1],[2 1],[0,0],[0],exp(-t)*heaviside(t),10)
+
+figure(1)
+hFig = figure(1);
+set(hFig, 'Position', [0 0 900 900])
+axes1 = axes('Parent',hFig,'FontWeight','bold','FontSize',16);
+tiempo=0:0.01:t0;
+subplot(2,2,1);
+fplot(RI,[0 t0],'b','LineWidth',2)
+title('Respuesta Impulso');
+grid on
+subplot(2,2,2);
+fplot(RE0,[0 t0],'b','LineWidth',2)
+title('Respuesta Estado cero(Con Fourier)');
+grid on
+
+disp('FUNCIÓN DE TRANSFERENCIA:')
+pretty(FT)
+
+
+%% Respuesta a entrada y estado cero
+%
+% Para obtener la respuesta a estado cero, las condiciones iniciales tienen
+% que ser igual a 0, es decir:
+%
+% $$ y(0) = 0, y'(0) = 0 , y''(0) = 0 ... y^{n}(0) = 0 $$
+%
+% En este caso quedaria de la siguiente manera:
+%
+function laplace20161(a,b,ciy,cix,xi,t0)
+
+close all
+tam2=size(a);
+tami2=size(b);
+syms y(t) Y(s) x(t) X(s) Yy fp;
+syms edd edi 
+edd2=0;
+edi2=0;
+
+for i=1:tam2(2)
+   edd2=edd2+a(i)*s^(i-1)*Y(s);
+   for k=1:i-1
+       edd2=edd2-a(i)*(s^(i-1-k)*ciy(k));
+   end
+end
+
+for i=1:tami2(2)
+   edi2=edi2+b(i)*s^(i-1)*X(s);
+   for k=1:i-1
+       edi2=edi2-b(i)*(s^(i-1-k)*cix(k));
+   end
+end
+mensaje('APLICAMOS TRANSFORMADA DE LAPLACE y subtituimos condiciones iniciales')
+
+pretty(edd2)
+disp('=')
+pretty(edi2)
+
+mensaje('SUBSTITUIMOS LA TRANSFORMADA DE LA ENTRADA')
+
+edi2=subs(edi2,X(s), laplace(xi));
+pretty(edd2)
+disp('=')
+pretty(edi2)
+
+mensaje('DESPEJAMOS Y(s)')
+
+edd2=collect(edd2,Y(s));
+edd2=subs(edd2,Y(s),Yy);
+eq1=edd2==edi2;
+disp('Y(s)=')
+edd2=solve(eq1, Yy);
+pretty(edd2)
+
+mensaje('Aplicamos transformada inversa, asi la solución es')
+disp('y(t)=')
+y2(t)=ilaplace(edd2);
+pretty(y2(t))
+
+dy(t)=diff(y2,t);
+ddy(t)=diff(dy,t);
+
+subplot(2,2,4)
+hold on
+fplot(y2,[0,t0],'m','LineWidth',2)
+legend('Salida y(t)','Location','Best')
+xlabel('tiempo','FontWeight','bold','FontSize',16)
+title('Respuesta Estado Cero (Con Laplace)','FontWeight','bold','FontSize',16)
+grid on
+
+% Respuesta a entrada cero 
+%
+% Por definición, la respuesta a entrada cero quiere decir que no tenemos
+% ninguna entrada al sistema, por lo que quedaría de la siguiente manera.
+%
+% $$ y''(t)+2'y(t)+2y = 0 $$, con $$ y(0-) = 1 $$ y $$ y(0)=0 $$
+%
+
+tam=size(a);
+syms y(t) Y(s) x(t) X(s) Yy fp;
+syms edd edi 
+edd=0;
+edi=0;
+ciy=[1,0]
+
+for i=1:tam(2)
+   edd=edd+a(i)*s^(i-1)*Y(s);
+   for k=1:i-1
+       edd=edd-a(i)*(s^(i-1-k)*ciy(k));
+   end
+end
+
+mensaje('APLICAMOS TRANSFORMADA DE LAPLACE y subtituimos condiciones iniciales')
+
+pretty(edd)
+disp('=')
+
+mensaje('SUBSTITUIMOS LA TRANSFORMADA DE LA ENTRADA')
+
+pretty(edd)
+disp('=')
+
+mensaje('DESPEJAMOS Y(s)')
+
+edd=collect(edd,Y(s));
+edd=subs(edd,Y(s),Yy);
+eq1=edd==edi;
+disp('Y(s)=')
+edd=solve(eq1, Yy);
+pretty(edd)
+
+mensaje('Aplicamos transformada inversa, asi la solución es')
+disp('y(t)=')
+y(t)=ilaplace(edd);
+pretty(y(t))
+
+dy(t)=diff(y,t);
+ddy(t)=diff(dy,t);
+
+subplot(2,2,3)
+hold on
+fplot(y,[0,t0],'m','LineWidth',2)
+legend('Salida y(t)','Location','Best')
+xlabel('tiempo','FontWeight','bold','FontSize',16)
+title('Respuesta Entrada Cero','FontWeight','bold','FontSize',16)
+grid on
+
+end
+
+function mensaje(texto)
+disp( ' ')
+disp(texto)
+disp( ' ')
+end
+
+%% Referencias.
+% * B.P. Lathi. (2005). chapter 6.6. _Linear Systems and Signals_. E.U.A: Oxford University Press.
+##### SOURCE END #####
+--></body></html>
